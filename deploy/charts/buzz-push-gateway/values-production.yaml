@@ -1,0 +1,19 @@
+# Required environment-owned values are deliberately invalid/empty here. A
+# production renderer must inject all of them; CI proves omission fails.
+image:
+  tag: ""
+  digest: ""
+profiles:
+  dogfood:
+    appAttestAppId: ""
+httpRoute:
+  # Keep disabled when the platform already routes push.buzz.xyz to this
+  # Service. Gateway API users enable it and inject an explicit parentRef.
+  enabled: false
+  parentRefs: []
+  hostnames:
+    - push.buzz.xyz
+networkPolicy:
+  apnsEgressCidrs:
+    - 0.0.0.0/0
+  postgresEgressCidrs: []

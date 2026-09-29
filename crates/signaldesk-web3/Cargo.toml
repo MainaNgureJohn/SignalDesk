@@ -1,0 +1,36 @@
+[package]
+name = "signaldesk-web3"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+repository.workspace = true
+description = "Typed Binance Web3 API client for SignalDesk"
+
+[features]
+credential-store = ["dep:keyring"]
+
+[dependencies]
+base64 = { workspace = true }
+chrono = { workspace = true }
+futures-util = { workspace = true }
+hmac = { workspace = true }
+percent-encoding = { workspace = true }
+reqwest = { workspace = true }
+serde = { workspace = true }
+serde_json = { workspace = true }
+sha2 = { workspace = true }
+thiserror = { workspace = true }
+zeroize = { workspace = true }
+
+[target.'cfg(target_os = "linux")'.dependencies]
+keyring = { version = "3.6.3", default-features = false, features = ["sync-secret-service", "vendored"], optional = true }
+
+[target.'cfg(target_os = "macos")'.dependencies]
+keyring = { version = "3.6.3", default-features = false, features = ["apple-native", "vendored"], optional = true }
+
+[target.'cfg(windows)'.dependencies]
+keyring = { version = "3.6.3", default-features = false, features = ["windows-native", "vendored"], optional = true }
+
+[dev-dependencies]
+tokio = { workspace = true }

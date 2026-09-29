@@ -1,0 +1,19 @@
+[package]
+name = "signaldesk-web3-mcp"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+repository.workspace = true
+description = "Read-only SignalDesk MCP tools for Binance Web3 tokenized stocks"
+
+[dependencies]
+rmcp = { workspace = true }
+rustls = { version = "0.23", default-features = false, features = ["ring", "std"] }
+schemars = { workspace = true }
+serde = { workspace = true }
+serde_json = { workspace = true }
+signaldesk-agentic-wallet = { workspace = true }
+signaldesk-web3 = { workspace = true, features = ["credential-store"] }
+tokio = { workspace = true }
+tracing-subscriber = { workspace = true }

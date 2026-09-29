@@ -1,0 +1,12 @@
+{
+  "bundle": {
+    "externalBin": [
+      "binaries/buzz-acp",
+      "binaries/buzz-agent",
+      "binaries/buzz-dev-mcp",
+      "binaries/signaldesk-web3-mcp",
+      "binaries/git-credential-nostr",
+      "binaries/buzz"
+    ]
+  }
+}

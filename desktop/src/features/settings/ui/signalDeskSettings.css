@@ -1,0 +1,170 @@
+.buzz-huddle-app-surface:has(.sd-settings-root) {
+  background: #06140c;
+}
+
+.buzz-huddle-app-surface:has(.sd-settings-root) [data-buzz-gradient-layer] {
+  display: none;
+}
+
+.sd-settings-root {
+  background: #06140c;
+}
+
+.sd-settings-sidebar,
+.sd-settings-inset {
+  color-scheme: dark;
+  --background: 151 45% 7%;
+  --foreground: 103 44% 92%;
+  --card: 147 42% 10%;
+  --card-foreground: 103 44% 92%;
+  --popover: 147 42% 10%;
+  --popover-foreground: 103 44% 92%;
+  --primary: 92 87% 72%;
+  --primary-foreground: 151 45% 7%;
+  --secondary: 146 35% 15%;
+  --secondary-foreground: 103 44% 92%;
+  --muted: 146 35% 15%;
+  --muted-foreground: 121 19% 65%;
+  --accent: 140 36% 21%;
+  --accent-foreground: 103 44% 92%;
+  --border: 139 28% 28%;
+  --input: 139 28% 28%;
+  --ring: 92 87% 72%;
+  --sidebar: 150 49% 6%;
+  --sidebar-background: 150 49% 6%;
+  --sidebar-foreground: 113 30% 84%;
+  --sidebar-primary: 92 87% 72%;
+  --sidebar-primary-foreground: 151 45% 7%;
+  --sidebar-active: 141 37% 20%;
+  --sidebar-active-foreground: 91 100% 82%;
+  --sidebar-accent: 145 36% 16%;
+  --sidebar-accent-foreground: 103 44% 92%;
+  --sidebar-border: 142 30% 20%;
+  --sidebar-ring: 92 87% 72%;
+}
+
+.sd-settings-sidebar {
+  --buzz-muted-foreground: #86aa83;
+  border-right: 1px solid #31563a;
+  background: #06140c;
+}
+
+.sd-settings-sidebar [data-testid="settings-sidebar-top-chrome"] {
+  display: none;
+}
+
+.sd-settings-sidebar [data-sidebar="header"] {
+  padding: 24px 14px 12px;
+}
+
+.sd-settings-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0 8px 23px;
+  color: #e9f9dc;
+}
+
+.sd-settings-brand > span {
+  display: grid;
+  place-items: center;
+  width: 35px;
+  height: 35px;
+  border: 1px solid #aaf276;
+  border-radius: 10px;
+  background: #244425;
+  color: #ddffb8;
+  font-size: 22px;
+  box-shadow: 0 0 16px #9aff5070;
+}
+
+.sd-settings-brand strong,
+.sd-settings-brand small {
+  display: block;
+}
+
+.sd-settings-brand strong {
+  font-size: 15px;
+  letter-spacing: -0.04em;
+}
+
+.sd-settings-brand small {
+  margin-top: 2px;
+  color: #9dbd92;
+  font:
+    700 8px "JetBrains Mono",
+    monospace;
+  letter-spacing: 0.13em;
+}
+
+.sd-settings-sidebar [data-sidebar="group-label"] {
+  color: #86aa83;
+  opacity: 1;
+  font:
+    700 9px "JetBrains Mono",
+    monospace;
+  letter-spacing: 0.13em;
+}
+
+.sd-settings-sidebar [data-sidebar="menu-button"] {
+  min-height: 34px;
+  border-radius: 9px;
+  color: #bbd5b5;
+}
+
+.sd-settings-sidebar [data-sidebar="menu-button"]:hover {
+  background: #17351f;
+  color: #e9f9dc;
+}
+
+.sd-settings-sidebar [data-sidebar="menu-button"][data-active="true"] {
+  border: 1px solid #5f974b;
+  background: #1a3a21;
+  color: #dcffba;
+  box-shadow:
+    inset 0 1px #c9ff8c25,
+    0 0 14px #aafa6e22;
+}
+
+.sd-settings-inset {
+  background: #06140c;
+}
+
+.sd-settings-inset [data-testid="settings-top-chrome"] {
+  height: 22px;
+  background: #06140c;
+}
+
+.sd-settings-content {
+  border: 1px solid #31563a;
+  background:
+    radial-gradient(circle at 55% 0, #174127 0, transparent 42%),
+    radial-gradient(circle, #a3dd5430 1px, transparent 1px), #07180e;
+  background-size:
+    auto,
+    24px 24px,
+    auto;
+  box-shadow: inset 0 1px #b5ff7b1a;
+}
+
+.sd-settings-kicker {
+  margin: 0 auto 22px;
+  max-width: 896px;
+  color: #a7d187;
+  font:
+    700 9px "JetBrains Mono",
+    monospace;
+  letter-spacing: 0.15em;
+}
+
+.sd-settings-content [data-testid^="settings-panel-"] {
+  color: #e4f5da;
+}
+
+.sd-settings-content [data-testid^="settings-panel-"] > * {
+  border-color: #31563a;
+}
+
+.sd-settings-content [data-settings-subcopy] {
+  color: #a7c1a0;
+}

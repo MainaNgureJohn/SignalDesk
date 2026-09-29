@@ -1,0 +1,168 @@
+.sd-onboarding.buzz-onboarding-neutral-theme {
+  color-scheme: dark;
+  --buzz-welcome-chartreuse: #07180e;
+  --buzz-onboarding-shell-bottom: #06140c;
+  --buzz-onboarding-cta-label: #07180e;
+  --buzz-onboarding-backup-ink: #b5f879;
+  --background: 151 45% 7%;
+  --foreground: 103 44% 92%;
+  --card: 147 42% 10%;
+  --card-foreground: 103 44% 92%;
+  --popover: 147 42% 10%;
+  --popover-foreground: 103 44% 92%;
+  --primary: 92 87% 72%;
+  --primary-foreground: 151 45% 7%;
+  --secondary: 146 35% 15%;
+  --secondary-foreground: 103 44% 92%;
+  --muted: 146 35% 15%;
+  --muted-foreground: 121 19% 65%;
+  --accent: 140 36% 21%;
+  --accent-foreground: 103 44% 92%;
+  --border: 139 28% 28%;
+  --input: 139 28% 28%;
+  --ring: 92 87% 72%;
+}
+
+.sd-onboarding.buzz-onboarding-neutral-theme.buzz-startup-shell,
+.sd-onboarding.buzz-onboarding-neutral-theme.buzz-startup-shell.buzz-onboarding-welcome,
+.sd-onboarding.buzz-onboarding-neutral-theme.buzz-startup-shell.buzz-onboarding-security-theme {
+  background-color: #06140c;
+  background-image:
+    radial-gradient(circle at 50% 28%, #19492b 0, transparent 43%),
+    radial-gradient(circle, #bbef8730 1px, transparent 1px),
+    linear-gradient(180deg, #07170d, #06140c 72%);
+  background-size:
+    auto,
+    24px 24px,
+    auto;
+}
+
+.sd-onboarding h1 {
+  color: #e9f9dc;
+  letter-spacing: -0.055em;
+}
+
+.sd-onboarding.buzz-onboarding-welcome h1 {
+  color: #c5ff8d;
+  text-shadow: 0 0 45px #a5ff6755;
+}
+
+.sd-onboarding button:not([disabled]) {
+  transition:
+    box-shadow 0.2s,
+    transform 0.2s,
+    background-color 0.2s;
+}
+
+.sd-onboarding button:not([disabled]):hover {
+  box-shadow: 0 0 18px #aafa6e38;
+}
+
+.sd-onboarding-logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  color: #e9f9dc;
+  font-size: 16px;
+  font-weight: 750;
+  letter-spacing: -0.05em;
+}
+
+.sd-onboarding-logo > span {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border: 1px solid #aaf276;
+  border-radius: 9px;
+  background: #244425;
+  color: #dcffb8;
+  font-size: 23px;
+  box-shadow: 0 0 15px #9aff5070;
+}
+
+.sd-landing-field {
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+
+.sd-landing-orbit {
+  position: absolute;
+  left: 50%;
+  top: 47%;
+  width: min(75vw, 840px);
+  aspect-ratio: 1;
+  transform: translate(-50%, -50%);
+  border: 1px solid #9ae55a15;
+  border-radius: 50%;
+  box-shadow:
+    0 0 0 95px #a9f15e06,
+    0 0 0 195px #a9f15e04;
+}
+
+.sd-landing-agent {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 5px;
+  width: 125px;
+  padding: 15px;
+  border: 1px solid #81bf59;
+  border-radius: 18px;
+  background: linear-gradient(145deg, #193e23, #0b1d11);
+  color: #dfffbb;
+  box-shadow:
+    0 0 20px #9aff5066,
+    8px 12px 0 #051006;
+}
+
+.sd-landing-agent > span {
+  font-size: 28px;
+  line-height: 1;
+}
+
+.sd-landing-agent small {
+  color: #abd0a1;
+  font:
+    700 9px "JetBrains Mono",
+    monospace;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.sd-landing-pollen {
+  left: 9%;
+  top: 25%;
+  transform: rotate(-10deg);
+}
+
+.sd-landing-fizz {
+  right: 11%;
+  top: 21%;
+  transform: rotate(9deg);
+}
+
+.sd-landing-honey {
+  right: 17%;
+  bottom: 16%;
+  transform: rotate(-7deg);
+}
+
+@media (max-width: 900px) {
+  .sd-landing-agent {
+    opacity: 0.4;
+    scale: 0.8;
+  }
+}
+
+@media (max-width: 650px) {
+  .sd-landing-agent {
+    display: none;
+  }
+  .sd-onboarding-logo {
+    font-size: 13px;
+  }
+}

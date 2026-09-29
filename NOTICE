@@ -1,0 +1,17 @@
+SignalDesk
+Copyright 2026 SignalDesk contributors
+
+This product includes software developed by Block, Inc. in the Buzz project
+(https://github.com/block/buzz), used under the Apache License, Version 2.0.
+
+Upstream revision used for this derivative:
+3c7f288c60d67df78577b237e27c3dfc8831aaa1
+
+The Apache License is provided in LICENSE. Component-specific notices and
+licenses remain in their original locations, including:
+
+- desktop/public/pow/LICENSE.txt
+- desktop/src-tauri/resources/pocket-voices/NOTICE.md
+- mobile/assets/fonts/Inter-LICENSE.txt
+
+SignalDesk is a distinct project name and is not presented as a Block product.
