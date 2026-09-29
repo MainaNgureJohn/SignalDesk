@@ -47,6 +47,11 @@ export function resolveBaseRef(repoRoot, env = process.env) {
   }
 
   if (env.GITHUB_ACTIONS === "true") {
+    try {
+      git(["cat-file", "-e", "HEAD^1^{commit}"], repoRoot);
+    } catch {
+      return "HEAD";
+    }
     return "HEAD^1";
   }
 

@@ -115,6 +115,19 @@ test("local base resolution uses the branch merge-base and fails without origin/
   );
 });
 
+test("github actions base resolution falls back to HEAD for a root commit", () => {
+  const repo = mkdtempSync(path.join(tmpdir(), "file-size-github-actions-base-"));
+  git(repo, "init", "-b", "main");
+  git(repo, "config", "user.name", "Test");
+  git(repo, "config", "user.email", "test@example.com");
+  git(repo, "commit", "--allow-empty", "-m", "root commit");
+
+  assert.equal(resolveBaseRef(repo, { GITHUB_ACTIONS: "true" }), "HEAD");
+
+  git(repo, "commit", "--allow-empty", "-m", "second commit");
+  assert.equal(resolveBaseRef(repo, { GITHUB_ACTIONS: "true" }), "HEAD^1");
+});
+
 const entrypointCases = [
   {
     surface: "desktop",

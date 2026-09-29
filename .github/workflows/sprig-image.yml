@@ -49,6 +49,7 @@ env:
   # Single source of truth for the image name; override with the
   # GHCR_SPRIG_IMAGE repo variable (same pattern as docker.yml).
   IMAGE_NAME: ${{ vars.GHCR_SPRIG_IMAGE != '' && vars.GHCR_SPRIG_IMAGE || 'ghcr.io/block/buzz-sprig' }}
+  CAN_PUBLISH_GHCR: ${{ vars.GHCR_SPRIG_IMAGE != '' || github.repository_owner == 'block' }}
 
 jobs:
   build:
@@ -120,14 +121,14 @@ jobs:
           file: ./Dockerfile.sprig
           platforms: ${{ matrix.platform }}
           labels: ${{ steps.meta.outputs.labels }}
-          outputs: type=image,name=${{ env.IMAGE_NAME }},push-by-digest=true,name-canonical=true,push=${{ github.event_name != 'pull_request' }}
+          outputs: type=image,name=${{ env.IMAGE_NAME }},push-by-digest=true,name-canonical=true,push=${{ github.event_name != 'pull_request' && env.CAN_PUBLISH_GHCR == 'true' }}
           cache-from: |
             type=registry,ref=${{ env.IMAGE_NAME }}-buildcache:${{ matrix.arch }}
           cache-to: |
-            ${{ (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository) && format('type=registry,ref={0}-buildcache:{1},mode=max,compression=zstd', env.IMAGE_NAME, matrix.arch) || '' }}
+            ${{ env.CAN_PUBLISH_GHCR == 'true' && (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository) && format('type=registry,ref={0}-buildcache:{1},mode=max,compression=zstd', env.IMAGE_NAME, matrix.arch) || '' }}
 
       - name: Export digest
-        if: github.event_name != 'pull_request'
+        if: github.event_name != 'pull_request' && env.CAN_PUBLISH_GHCR == 'true'
         env:
           DIGEST: ${{ steps.build.outputs.digest }}
         run: |
@@ -135,7 +136,7 @@ jobs:
           touch "/tmp/digests/${DIGEST#sha256:}"
 
       - name: Upload digest
-        if: github.event_name != 'pull_request'
+        if: github.event_name != 'pull_request' && env.CAN_PUBLISH_GHCR == 'true'
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a  # v7.0.1
         with:
           name: sprig-digest-${{ matrix.arch }}
@@ -145,7 +146,7 @@ jobs:
 
   merge:
     name: Merge multi-arch manifest
-    if: github.event_name != 'pull_request'
+    if: github.event_name != 'pull_request' && (vars.GHCR_SPRIG_IMAGE != '' || github.repository_owner == 'block')
     runs-on: ubuntu-24.04
     needs: build
     timeout-minutes: 15
