@@ -1,17 +1,2 @@
-# Task-local Codex configuration for SignalDesk milestone 1.
-# Run Codex/Buzz with CODEX_HOME pointing at this directory. This keeps the
-# Binance connection out of the user's global Codex configuration.
-
-[mcp_servers.binance-mcp-server]
-url = "https://agent.binance.com/mcp/agentic"
-auth = "oauth"
-enabled = true
-required = true
-tool_timeout_sec = 60
-default_tools_approval_mode = "auto"
-enabled_tools = [
-  "get_spot_symbol_price_ticker",
-  "get_spot_24hr_ticker_price_change_statistics",
-  "get_spot_order_book",
-  "get_spot_kline_candlestick_data",
-]
+# Task-local Codex configuration for SignalDesk.
+# Binance Web3 API and Agentic Wallet tools are provided by SignalDesk Web3 MCP.
