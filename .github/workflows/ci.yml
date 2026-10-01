@@ -54,7 +54,9 @@ jobs:
               - 'scripts/test-postgres-test-discovery.sh'
               - 'scripts/test-postgres-test-wrapper.sh'
               - 'deny.toml'
-              - '.github/workflows/_ci-*.yml'
+              - '.github/workflows/_ci-rust.yml'
+              - '.github/workflows/_ci-relay.yml'
+              - '.github/workflows/_ci-security.yml'
               - 'scripts/run-tests.sh'
               - 'scripts/model-capabilities.json'
               - 'scripts/normative-corpus.json'
@@ -62,6 +64,7 @@ jobs:
             desktop:
               - 'scripts/model-capabilities.json'
               - 'scripts/normative-corpus.json'
+              - '.github/workflows/_ci-desktop.yml'
               - 'desktop/**'
               - '!desktop/src-tauri/**'
               - 'pnpm-lock.yaml'
@@ -88,7 +91,7 @@ jobs:
               - 'scripts/test-mobile-release-candidate-publisher.sh'
               - 'scripts/test-mobile-worktree-overrides.sh'
               - '.github/workflows/mobile-release-candidate.yml'
-              - '.github/workflows/_ci-*.yml'
+              - '.github/workflows/_ci-clients.yml'
       - name: Validate PostgreSQL test discovery
         if: steps.filter.outputs.rust == 'true'
         run: |
