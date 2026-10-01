@@ -3,6 +3,13 @@ on:
   push:
     branches: [main, release]
   pull_request:
+  workflow_dispatch:
+    inputs:
+      run_desktop:
+        description: Run desktop checks for the current commit
+        required: false
+        type: boolean
+        default: true
 
 concurrency:
   group: ci-${{ github.workflow }}-${{ github.event_name == 'pull_request' && github.ref || github.sha }}
@@ -23,7 +30,7 @@ jobs:
       pull-requests: read
     outputs:
       rust: ${{ steps.filter.outputs.rust }}
-      desktop: ${{ steps.filter.outputs.desktop }}
+      desktop: ${{ (github.event_name == 'workflow_dispatch' && inputs.run_desktop) || steps.filter.outputs.desktop }}
       desktop-rust: ${{ steps.filter.outputs.desktop-rust }}
       desktop-e2e: ${{ steps.filter.outputs.desktop-e2e }}
       web: ${{ steps.filter.outputs.web }}
@@ -34,6 +41,7 @@ jobs:
           fetch-depth: 2
       - uses: cashapp/activate-hermit@cea9af7913204a965fd488637a8d1811bba2e616 # v1
       - uses: dorny/paths-filter@ceb8a2b8f2d89434be7ff52d3de7ec3738c5cc9d # v4.0.3
+        if: github.event_name != 'workflow_dispatch'
         id: filter
         with:
           token: ''
