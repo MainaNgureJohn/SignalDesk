@@ -25,6 +25,7 @@ jobs:
       rust: ${{ steps.filter.outputs.rust }}
       desktop: ${{ steps.filter.outputs.desktop }}
       desktop-rust: ${{ steps.filter.outputs.desktop-rust }}
+      desktop-e2e: ${{ steps.filter.outputs.desktop-e2e }}
       web: ${{ steps.filter.outputs.web }}
       mobile: ${{ steps.filter.outputs.mobile }}
     steps:
@@ -65,7 +66,14 @@ jobs:
               - '!desktop/src-tauri/**'
               - 'pnpm-lock.yaml'
             desktop-rust:
-              - 'desktop/src-tauri/**'
+              - 'desktop/src-tauri/**/*.rs'
+              - 'desktop/src-tauri/build.rs'
+              - 'desktop/src-tauri/Cargo.toml'
+              - 'desktop/src-tauri/Cargo.lock'
+            desktop-e2e:
+              - 'desktop/tests/e2e/**'
+              - 'desktop/playwright*.config.ts'
+              - '.github/workflows/_ci-relay.yml'
             web:
               - 'web/**'
               - 'pnpm-lock.yaml'
@@ -169,7 +177,7 @@ jobs:
   relay-artifacts-domain:
     name: Relay Artifact Producer
     needs: [changes]
-    if: needs.changes.outputs.desktop == 'true' || needs.changes.outputs.desktop-rust == 'true' || needs.changes.outputs.rust == 'true'
+    if: needs.changes.outputs.desktop-e2e == 'true' || needs.changes.outputs.desktop-rust == 'true' || needs.changes.outputs.rust == 'true'
     uses: ./.github/workflows/_ci-relay.yml
     with:
       rust: ${{ needs.changes.outputs.rust == 'true' }}
@@ -201,7 +209,7 @@ jobs:
   relay-domain:
     name: Relay and PostgreSQL
     needs: [changes, relay-artifacts-domain]
-    if: needs.changes.outputs.desktop == 'true' || needs.changes.outputs.desktop-rust == 'true' || needs.changes.outputs.rust == 'true'
+    if: needs.changes.outputs.desktop-e2e == 'true' || needs.changes.outputs.desktop-rust == 'true' || needs.changes.outputs.rust == 'true'
     uses: ./.github/workflows/_ci-relay.yml
     with:
       rust: ${{ needs.changes.outputs.rust == 'true' }}
@@ -304,7 +312,7 @@ jobs:
 
   desktop-e2e-relay:
     name: Desktop E2E Relay
-    if: always() && needs.changes.result == 'success' && (needs.changes.outputs.desktop == 'true' || needs.changes.outputs.desktop-rust == 'true' || needs.changes.outputs.rust == 'true')
+    if: always() && needs.changes.result == 'success' && (needs.changes.outputs.desktop-e2e == 'true' || needs.changes.outputs.desktop-rust == 'true' || needs.changes.outputs.rust == 'true')
     needs: [changes, relay-artifacts-domain]
     runs-on: ubuntu-latest
     timeout-minutes: 5
@@ -317,7 +325,7 @@ jobs:
 
   desktop-e2e-integration:
     name: Desktop E2E Integration
-    if: always() && needs.changes.result == 'success' && needs.relay-artifacts-domain.result == 'success' && (needs.changes.outputs.desktop == 'true' || needs.changes.outputs.desktop-rust == 'true' || needs.changes.outputs.rust == 'true')
+    if: always() && needs.changes.result == 'success' && needs.relay-artifacts-domain.result == 'success' && (needs.changes.outputs.desktop-e2e == 'true' || needs.changes.outputs.desktop-rust == 'true' || needs.changes.outputs.rust == 'true')
     needs: [changes, relay-artifacts-domain, relay-domain]
     runs-on: ubuntu-latest
     timeout-minutes: 5

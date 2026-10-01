@@ -74,7 +74,7 @@
   border-radius: 10px;
   background: #244425;
   color: #ddffb8;
-  font-size: 22px;
+  font-size: 1.375rem;
   box-shadow: 0 0 16px #9aff5070;
 }
 
@@ -84,7 +84,7 @@
 }
 
 .sd-settings-brand strong {
-  font-size: 15px;
+  font-size: 0.9375rem;
   letter-spacing: -0.04em;
 }
 

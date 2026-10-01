@@ -716,20 +716,22 @@ function MachineBootstrap({ sharedIdentity }: { sharedIdentity: boolean }) {
   // identity for its private relay, but creating it is an internal setup step.
   // Never replace a previously saved identity that entered recovery mode.
   useEffect(() => {
+    const currentPubkey = machine.currentPubkey;
     if (
       machine.stage !== "onboarding" ||
       machine.identityLost ||
       forceOnboardingForDevelopment ||
       machineInitialPage !== undefined ||
-      !machine.currentPubkey ||
-      autoSetupAttemptedRef.current === machine.currentPubkey
+      !currentPubkey
     ) {
       return;
     }
-    autoSetupAttemptedRef.current = machine.currentPubkey;
+    const attemptKey = `${currentPubkey}:${autoSetupRetry}`;
+    if (autoSetupAttemptedRef.current === attemptKey) return;
+    autoSetupAttemptedRef.current = attemptKey;
     setAutoSetupError(null);
     if (machine.identityStorage !== "ephemeral") {
-      completeMachineOnboarding(machine.currentPubkey);
+      completeMachineOnboarding(currentPubkey);
       return;
     }
     void persistCurrentIdentity()
@@ -745,6 +747,7 @@ function MachineBootstrap({ sharedIdentity }: { sharedIdentity: boolean }) {
         );
       });
   }, [
+    autoSetupRetry,
     completeMachineOnboarding,
     forceOnboardingForDevelopment,
     machine.currentPubkey,
