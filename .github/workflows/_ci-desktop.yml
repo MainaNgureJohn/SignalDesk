@@ -115,7 +115,9 @@ jobs:
   desktop-smoke-e2e:
     name: Desktop Smoke E2E (${{ matrix.shard }})
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    # This project includes the full browser regression suite, split across four
+    # serial shards. Give slow GitHub runners enough time to finish a shard.
+    timeout-minutes: 60
     if: github.event_name == 'push' || inputs.desktop || inputs.desktop_rust || inputs.rust
     strategy:
       fail-fast: false
