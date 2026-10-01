@@ -10,7 +10,6 @@ name: Sprig image
 # No QEMU emulation.
 #
 # Triggers:
-#   - push to main (paths-filtered) → :main + :sha-<7>
 #   - tag sprig-v*                  → semver family (shared with sprig.yml's
 #                                     binary release — one tag versions both)
 #   - pull_request (paths-filtered) → build only, no push
@@ -22,7 +21,6 @@ name: Sprig image
 
 on:
   push:
-    branches: [main]
     tags: ["sprig-v[0-9]*"]
     paths:
       - "Dockerfile.sprig"

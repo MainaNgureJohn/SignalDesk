@@ -16,8 +16,6 @@ name: Docker image
 # the relay image version tracks crates/buzz-relay/Cargo.toml, never desktop.
 #
 # Triggers:
-#   - push to main           → :main + :sha-<7>
-#                              + :debug-main + :debug-sha-<7>
 #   - push tags relay-v*.*.* → :{version} + :{major}.{minor} + :{major}
 #                              + matching :debug-* tags
 #                              (+ :latest/:debug-latest for stable releases)
@@ -41,7 +39,6 @@ name: Docker image
 
 on:
   push:
-    branches: [main]
     tags: ["relay-v[0-9]*"]
   pull_request:
     paths:
