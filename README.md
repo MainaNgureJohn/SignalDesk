@@ -16,10 +16,9 @@
 
 ## Overview
 
-SignalDesk adapts [Block's Buzz](https://github.com/block/buzz) into a focused
-Windows workspace for BSC bStock research and Agentic Wallet purchases. It
-preserves Buzz's rooms, streamed agent activity, history, cancellation, and ACP
-agent lifecycle while assigning the three built-in agents clear roles.
+SignalDesk is a Windows workspace for BSC bStock research and Agentic Wallet
+purchases. It brings shared rooms, streamed agent activity, conversation history,
+cancellation, and ACP agent sessions together with three built-in agents.
 
 | Agent | Responsibility | Binance access |
 |---|---|---|
@@ -40,7 +39,7 @@ authorizes one purchase request. Honey and Pollen cannot submit trades.
 - Binance Web3 credentials stored in the operating-system credential store.
 - One-action confirmation gate for Agentic Wallet bStock purchases.
 - Reconciliation guidance when a write returns an uncertain result.
-- Persistent conversation history and records inherited from Buzz.
+- Persistent conversation history and records.
 - Exact-ticker BSC bStock research and read-only USDT trade previews through
   the Binance Web3 API.
 - Fizz-only BSC bStock quote and execution through Binance Agentic Wallet.
@@ -141,7 +140,7 @@ Example requests:
 
 ```text
 SignalDesk desktop (Tauri + React)
-  -> Buzz relay and agent harness
+  -> Relay and agent harness
     -> codex-acp
       -> local Codex CLI
         -> SignalDesk Web3 MCP
@@ -150,8 +149,8 @@ SignalDesk desktop (Tauri + React)
 ```
 
 The desktop and agent bridge are written in Rust and TypeScript. SignalDesk
-uses Buzz's existing ACP path because it already supports agent sessions,
-streaming, tool activity, cancellation, and relay-backed history.
+uses ACP for agent sessions, streaming, tool activity, cancellation, and
+relay-backed history.
 
 ## Build from source
 
@@ -194,8 +193,8 @@ For SignalDesk's browser workflows, run `pnpm -C desktop test:e2e:signaldesk`.
 This builds the test bridge and checks direct startup, agent settings, task
 routing and replies, and tokenized-stock research using a mock backend. CI runs
 these checks alongside the desktop unit tests and native build checks.
-The inherited Buzz browser suites remain in `desktop/playwright.config.ts`;
-they target Buzz's original screens, which SignalDesk replaced.
+Legacy browser suites remain in `desktop/playwright.config.ts`; they target
+screens that are no longer part of SignalDesk's current interface.
 
 Build an unsigned Windows package with the `x86_64-pc-windows-msvc` Rust target
 after the required sidecar binaries have been built and placed in
@@ -221,10 +220,7 @@ The detailed implementation and acceptance status is recorded in
 
 ## License and attribution
 
-SignalDesk is derived from [Block's Buzz](https://github.com/block/buzz) at
-upstream revision `3c7f288c60d67df78577b237e27c3dfc8831aaa1`.
-
-The project is licensed under the [Apache License 2.0](LICENSE). The derivative
-attribution and retained component notices are documented in [NOTICE](NOTICE).
+The project is licensed under the [Apache License 2.0](LICENSE). Attribution
+and retained component notices are documented in [NOTICE](NOTICE).
 SignalDesk is a distinct project and is not presented as a Block or Binance
 product.
