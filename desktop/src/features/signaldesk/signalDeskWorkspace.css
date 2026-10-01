@@ -171,7 +171,9 @@
   align-items: center;
   gap: 12px;
   color: #aacd9d;
-  font: 700 10px "JetBrains Mono", monospace;
+  font:
+    700 10px "JetBrains Mono",
+    monospace;
   letter-spacing: 0.12em;
 }
 .sd-task-switcher button {
@@ -189,7 +191,9 @@
 }
 .sd-task-switcher-head button {
   padding: 7px 11px;
-  font: 700 11px Inter, sans-serif;
+  font:
+    700 11px Inter,
+    sans-serif;
   letter-spacing: normal;
 }
 .sd-task-list {

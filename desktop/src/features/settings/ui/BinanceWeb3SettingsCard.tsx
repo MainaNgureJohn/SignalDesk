@@ -419,7 +419,9 @@ export function BinanceWeb3SettingsCard() {
                 onClick={() => void checkBalances()}
                 variant="outline"
               >
-                {balanceBusy ? <LoaderCircle className="h-4 w-4 animate-spin" /> : null}
+                {balanceBusy ? (
+                  <LoaderCircle className="h-4 w-4 animate-spin" />
+                ) : null}
                 Check BSC balances
               </Button>
             ) : null}
@@ -438,7 +440,9 @@ export function BinanceWeb3SettingsCard() {
           </div>
           {balances !== null ? (
             <div className="rounded-lg border border-emerald-700/30 bg-emerald-950/20 p-3">
-              <p className="mb-2 text-xs font-semibold uppercase tracking-wide">Live BSC balances · read only</p>
+              <p className="mb-2 text-xs font-semibold uppercase tracking-wide">
+                Live BSC balances · read only
+              </p>
               <pre className="max-h-64 overflow-auto whitespace-pre-wrap break-all text-xs">
                 {JSON.stringify(balances, null, 2)}
               </pre>

@@ -4,16 +4,30 @@ import { installMockBridge } from "../helpers/bridge";
 
 type MockAgent = { name: string; pubkey: string; status: string };
 
-test("starts a new desk without the Buzz identity sign-in flow", async ({ page }) => {
-  await installMockBridge(page, { identityStorage: "ephemeral" }, {
-    skipOnboardingSeed: true,
-    skipCommunitySeed: true,
-  });
+test("starts a new desk without the Buzz identity sign-in flow", async ({
+  page,
+}) => {
+  await installMockBridge(
+    page,
+    { identityStorage: "ephemeral" },
+    {
+      skipOnboardingSeed: true,
+      skipCommunitySeed: true,
+    },
+  );
   await page.goto("/");
-  await expect.poll(async () => page.evaluate(() =>
-    window.__BUZZ_E2E_COMMANDS__?.includes("persist_current_identity") ?? false,
-  )).toBe(true);
-  await expect(page.getByRole("heading", { name: "Enter your private key" })).toHaveCount(0);
+  await expect
+    .poll(async () =>
+      page.evaluate(
+        () =>
+          window.__BUZZ_E2E_COMMANDS__?.includes("persist_current_identity") ??
+          false,
+      ),
+    )
+    .toBe(true);
+  await expect(
+    page.getByRole("heading", { name: "Enter your private key" }),
+  ).toHaveCount(0);
   await expect(page.getByTestId("machine-onboarding-gate")).toHaveCount(0);
 });
 
@@ -91,9 +105,12 @@ test("routes a desk request and keeps each agent reply visible", async ({
     if (!channel) throw new Error("Market Desk was not created");
     return {
       channelId: channel.id,
-      rootId: ((await invoke("get_channel_window", { channelId: channel.id })) as Array<{ id: string; content: string }>).find(
-        (event) => event.content.includes("Analyze BTC market conditions"),
-      )?.id,
+      rootId: (
+        (await invoke("get_channel_window", {
+          channelId: channel.id,
+        })) as Array<{ id: string; content: string }>
+      ).find((event) => event.content.includes("Analyze BTC market conditions"))
+        ?.id,
       pollen: agents.find((agent) => agent.name === "Pollen")?.pubkey,
       honey: agents.find((agent) => agent.name === "Honey")?.pubkey,
     };
@@ -177,13 +194,20 @@ test("routes a desk request and keeps each agent reply visible", async ({
     .fill("@Pollen focus on volume instead");
   await workspace.getByRole("button", { name: "Send reply" }).click();
   await expect(workspace.getByText("You replied")).toBeVisible();
-  const replies = await page.evaluate(async ({ channelId, rootId }) => {
-    const invoke = (
-      window as Window & { __TAURI_INTERNALS__?: { invoke: (command: string, args: unknown) => Promise<unknown> } }
-    ).__TAURI_INTERNALS__?.invoke;
-    if (!invoke) throw new Error("Mock Tauri bridge is unavailable");
-    return invoke("get_thread_replies", { channelId, rootEventId: rootId });
-  }, { channelId: team.channelId, rootId: team.rootId });
+  const replies = await page.evaluate(
+    async ({ channelId, rootId }) => {
+      const invoke = (
+        window as Window & {
+          __TAURI_INTERNALS__?: {
+            invoke: (command: string, args: unknown) => Promise<unknown>;
+          };
+        }
+      ).__TAURI_INTERNALS__?.invoke;
+      if (!invoke) throw new Error("Mock Tauri bridge is unavailable");
+      return invoke("get_thread_replies", { channelId, rootEventId: rootId });
+    },
+    { channelId: team.channelId, rootId: team.rootId },
+  );
   expect(JSON.stringify(replies)).toContain("focus on volume instead");
 });
 

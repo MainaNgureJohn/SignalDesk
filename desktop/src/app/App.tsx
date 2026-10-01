@@ -739,11 +739,12 @@ function MachineBootstrap({ sharedIdentity }: { sharedIdentity: boolean }) {
       })
       .catch((cause) => {
         setAutoSetupError(
-          cause instanceof Error ? cause.message : "Could not prepare this desk.",
+          cause instanceof Error
+            ? cause.message
+            : "Could not prepare this desk.",
         );
       });
   }, [
-    autoSetupRetry,
     completeMachineOnboarding,
     forceOnboardingForDevelopment,
     machine.currentPubkey,
@@ -818,7 +819,12 @@ function MachineBootstrap({ sharedIdentity }: { sharedIdentity: boolean }) {
     );
   }
 
-  if (machine.stage === "onboarding" && !machine.identityLost && !forceOnboardingForDevelopment && machineInitialPage === undefined) {
+  if (
+    machine.stage === "onboarding" &&
+    !machine.identityLost &&
+    !forceOnboardingForDevelopment &&
+    machineInitialPage === undefined
+  ) {
     return autoSetupError ? (
       <div className="flex min-h-dvh flex-col items-center justify-center gap-4 bg-[#0c1411] px-6 text-center text-white">
         <h1 className="text-3xl font-semibold">SignalDesk needs a moment</h1>

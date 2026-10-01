@@ -139,7 +139,9 @@ export function SignalDeskWorkspace({
 }) {
   const [draft, setDraft] = React.useState("");
   const [taggedPubkeys, setTaggedPubkeys] = React.useState<string[]>([]);
-  const [selectedRootId, setSelectedRootId] = React.useState<string | null>(null);
+  const [selectedRootId, setSelectedRootId] = React.useState<string | null>(
+    null,
+  );
   const [newTask, setNewTask] = React.useState(false);
   const [page, setPage] = React.useState<"desk" | "opportunities">("desk");
   const [setupError, setSetupError] = React.useState<string | null>(null);
@@ -219,11 +221,13 @@ export function SignalDeskWorkspace({
     [channelEvents],
   );
   const taskRoots = React.useMemo(
-    () => messages.filter((event) =>
-      event.pubkey.toLowerCase() === identity?.pubkey.toLowerCase() &&
-      getThreadReference(event.tags).parentId === null &&
-      !isKickoffMessage(event),
-    ),
+    () =>
+      messages.filter(
+        (event) =>
+          event.pubkey.toLowerCase() === identity?.pubkey.toLowerCase() &&
+          getThreadReference(event.tags).parentId === null &&
+          !isKickoffMessage(event),
+      ),
     [identity?.pubkey, messages],
   );
   const request =
@@ -235,12 +239,15 @@ export function SignalDeskWorkspace({
     [threadRepliesQuery.data],
   );
   const ownerFollowUps = React.useMemo(
-    () => threadMessages.filter((event) =>
-      event.pubkey.toLowerCase() === identity?.pubkey.toLowerCase(),
-    ),
+    () =>
+      threadMessages.filter(
+        (event) =>
+          event.pubkey.toLowerCase() === identity?.pubkey.toLowerCase(),
+      ),
     [identity?.pubkey, threadMessages],
   );
-  const latestOwnerMessage = ownerFollowUps[ownerFollowUps.length - 1] ?? request;
+  const latestOwnerMessage =
+    ownerFollowUps[ownerFollowUps.length - 1] ?? request;
   const selectedAgents = React.useMemo(() => {
     if (!latestOwnerMessage) return [];
     const tagged = new Set(
@@ -252,12 +259,14 @@ export function SignalDeskWorkspace({
       return availableAgents.filter((agent) =>
         tagged.has(agent.pubkey.toLowerCase()),
       );
-    return routeSignalDeskRequest(latestOwnerMessage.content).flatMap((name) => {
-      const agent = team.find(
-        (candidate) => candidate?.name.toLowerCase() === name.toLowerCase(),
-      );
-      return agent ? [agent] : [];
-    });
+    return routeSignalDeskRequest(latestOwnerMessage.content).flatMap(
+      (name) => {
+        const agent = team.find(
+          (candidate) => candidate?.name.toLowerCase() === name.toLowerCase(),
+        );
+        return agent ? [agent] : [];
+      },
+    );
   }, [latestOwnerMessage, availableAgents, team]);
   const selection = selectedAgents.map((agent) => agent.name);
   const responses = React.useMemo(
@@ -276,15 +285,22 @@ export function SignalDeskWorkspace({
     [threadMessages, request, availableAgents],
   );
   const conversation = React.useMemo(
-    () => [...ownerFollowUps, ...responses].sort((a, b) =>
-      a.created_at - b.created_at || a.id.localeCompare(b.id),
-    ),
+    () =>
+      [...ownerFollowUps, ...responses].sort(
+        (a, b) => a.created_at - b.created_at || a.id.localeCompare(b.id),
+      ),
     [ownerFollowUps, responses],
   );
   const responded = React.useMemo(
-    () => new Set(responses
-      .filter((event) => event.created_at >= (latestOwnerMessage?.created_at ?? 0))
-      .map((event) => event.pubkey.toLowerCase())),
+    () =>
+      new Set(
+        responses
+          .filter(
+            (event) =>
+              event.created_at >= (latestOwnerMessage?.created_at ?? 0),
+          )
+          .map((event) => event.pubkey.toLowerCase()),
+      ),
     [responses, latestOwnerMessage?.created_at],
   );
   const complete =
@@ -312,7 +328,7 @@ export function SignalDeskWorkspace({
       event.preventDefault();
       const content = draft.trim();
       if (!content || !channel || !identity || sending) return;
-      const parentEventId = newTask ? null : request?.id ?? null;
+      const parentEventId = newTask ? null : (request?.id ?? null);
       const explicit = availableAgents.filter((agent) =>
         content.toLowerCase().includes(`@${agent.name.toLowerCase()}`),
       );
@@ -328,13 +344,13 @@ export function SignalDeskWorkspace({
           ? explicit
           : parentEventId && defaultThreadAgents.length
             ? defaultThreadAgents
-          : names.flatMap((name) =>
-              team.filter((agent): agent is ManagedAgent =>
-                Boolean(
-                  agent && agent.name.toLowerCase() === name.toLowerCase(),
+            : names.flatMap((name) =>
+                team.filter((agent): agent is ManagedAgent =>
+                  Boolean(
+                    agent && agent.name.toLowerCase() === name.toLowerCase(),
+                  ),
                 ),
-              ),
-            );
+              );
       if (!available.length) {
         toast.error("No agents are available in this workspace yet.");
         return;
@@ -492,32 +508,43 @@ export function SignalDeskWorkspace({
             </p>
           </section>
           {taskRoots.length > 0 ? (
-            <section className="sd-task-switcher" aria-label="Task conversations">
+            <section
+              className="sd-task-switcher"
+              aria-label="Task conversations"
+            >
               <div className="sd-task-switcher-head">
                 <span>YOUR CONVERSATIONS</span>
                 <button
                   className={newTask ? "is-current" : ""}
-                  onClick={() => { setNewTask(true); setTaggedPubkeys([]); }}
+                  onClick={() => {
+                    setNewTask(true);
+                    setTaggedPubkeys([]);
+                  }}
                   type="button"
                 >
                   + New task
                 </button>
               </div>
               <div className="sd-task-list">
-                {taskRoots.slice(-6).reverse().map((task) => (
-                  <button
-                    key={task.id}
-                    className={!newTask && request?.id === task.id ? "is-current" : ""}
-                    onClick={() => {
-                      setSelectedRootId(task.id);
-                      setNewTask(false);
-                      setTaggedPubkeys([]);
-                    }}
-                    type="button"
-                  >
-                    {task.content.replace(/^(@\S+\s+)+/, "").slice(0, 64)}
-                  </button>
-                ))}
+                {taskRoots
+                  .slice(-6)
+                  .reverse()
+                  .map((task) => (
+                    <button
+                      key={task.id}
+                      className={
+                        !newTask && request?.id === task.id ? "is-current" : ""
+                      }
+                      onClick={() => {
+                        setSelectedRootId(task.id);
+                        setNewTask(false);
+                        setTaggedPubkeys([]);
+                      }}
+                      type="button"
+                    >
+                      {task.content.replace(/^(@\S+\s+)+/, "").slice(0, 64)}
+                    </button>
+                  ))}
               </div>
             </section>
           ) : null}
@@ -526,7 +553,9 @@ export function SignalDeskWorkspace({
             onSubmit={(event) => void handleSend(event)}
           >
             <label htmlFor="signaldesk-request">
-              {newTask || !request ? "NEW TASK" : "REPLY IN THIS TASK · DIRECT, APPROVE, OR CHANGE COURSE"}
+              {newTask || !request
+                ? "NEW TASK"
+                : "REPLY IN THIS TASK · DIRECT, APPROVE, OR CHANGE COURSE"}
             </label>
             <div className="sd-composer-row">
               <textarea
@@ -539,9 +568,11 @@ export function SignalDeskWorkspace({
                     event.currentTarget.form?.requestSubmit();
                   }
                 }}
-                placeholder={newTask || !request
-                  ? "What should the desk look into?"
-                  : "Reply to the agents in this conversation…"}
+                placeholder={
+                  newTask || !request
+                    ? "What should the desk look into?"
+                    : "Reply to the agents in this conversation…"
+                }
                 disabled={!channel || !identity || sending}
               />
               <button
@@ -549,7 +580,11 @@ export function SignalDeskWorkspace({
                 disabled={!draft.trim() || !channel || !identity || sending}
               >
                 <Send size={16} />
-                {sending ? "Sending" : newTask || !request ? "Start task" : "Send reply"}
+                {sending
+                  ? "Sending"
+                  : newTask || !request
+                    ? "Start task"
+                    : "Send reply"}
               </button>
             </div>
             <div className="sd-composer-foot">
@@ -624,10 +659,12 @@ export function SignalDeskWorkspace({
                 </p>
                 <small>
                   {latestOwnerMessage
-                    ? new Date(latestOwnerMessage.created_at * 1_000).toLocaleTimeString(
-                        [],
-                        { hour: "2-digit", minute: "2-digit" },
-                      )
+                    ? new Date(
+                        latestOwnerMessage.created_at * 1_000,
+                      ).toLocaleTimeString([], {
+                        hour: "2-digit",
+                        minute: "2-digit",
+                      })
                     : "Awaiting input"}
                 </small>
               </div>
@@ -765,19 +802,26 @@ export function SignalDeskWorkspace({
               <div className="sd-result-body">
                 {conversation.length ? (
                   conversation.map((response) => {
-                    const isOwner = response.pubkey.toLowerCase() === identity?.pubkey.toLowerCase();
+                    const isOwner =
+                      response.pubkey.toLowerCase() ===
+                      identity?.pubkey.toLowerCase();
                     const responseAgent = availableAgents.find(
                       (agent) =>
                         agent.pubkey.toLowerCase() ===
                         response.pubkey.toLowerCase(),
                     );
                     return (
-                      <article className={`sd-result-reply ${isOwner ? "is-owner" : ""}`} key={response.id}>
+                      <article
+                        className={`sd-result-reply ${isOwner ? "is-owner" : ""}`}
+                        key={response.id}
+                      >
                         <div className="sd-result-author">
                           <span className="sd-result-check">
                             {isOwner ? <Send size={13} /> : <Check size={15} />}
                           </span>
-                          {isOwner ? "You replied" : `${responseAgent?.name ?? "The team"} responded`}
+                          {isOwner
+                            ? "You replied"
+                            : `${responseAgent?.name ?? "The team"} responded`}
                         </div>
                         <div className="sd-result-copy">
                           <ReactMarkdown>{response.content}</ReactMarkdown>
@@ -807,7 +851,8 @@ export function SignalDeskWorkspace({
                   onSubmit={(event) => void handleSend(event)}
                 >
                   <label htmlFor="signaldesk-thread-reply">
-                    REPLY IN THIS CONVERSATION · DIRECT, APPROVE, OR CHANGE COURSE
+                    REPLY IN THIS CONVERSATION · DIRECT, APPROVE, OR CHANGE
+                    COURSE
                   </label>
                   <div className="sd-composer-row">
                     <textarea
@@ -825,7 +870,9 @@ export function SignalDeskWorkspace({
                     />
                     <button
                       type="submit"
-                      disabled={!draft.trim() || !channel || !identity || sending}
+                      disabled={
+                        !draft.trim() || !channel || !identity || sending
+                      }
                     >
                       <Send size={16} /> {sending ? "Sending" : "Send reply"}
                     </button>
