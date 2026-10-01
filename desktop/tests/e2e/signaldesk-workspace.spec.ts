@@ -189,10 +189,17 @@ test("routes a desk request and keeps each agent reply visible", async ({
   ).toBeVisible();
   await expect(workspace.getByText("FINISHED")).toBeVisible();
 
+  const taskReply = workspace.getByRole("textbox", {
+    name: /REPLY IN THIS TASK/,
+  });
+  await taskReply.fill("@Pollen focus on volume instead");
   await workspace
-    .getByRole("textbox", { name: /REPLY IN THIS TASK/ })
-    .fill("@Pollen focus on volume instead");
-  await workspace.getByRole("button", { name: "Send reply" }).click();
+    .locator("form")
+    .filter({
+      has: page.getByRole("textbox", { name: /REPLY IN THIS TASK/ }),
+    })
+    .getByRole("button", { name: "Send reply" })
+    .click();
   await expect(workspace.getByText("You replied")).toBeVisible();
   const replies = await page.evaluate(
     async ({ channelId, rootId }) => {

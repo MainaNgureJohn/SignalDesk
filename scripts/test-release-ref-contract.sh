@@ -19,23 +19,28 @@ git -C "$tmp" tag -m "desktop release" desktop-v1.2.3
   GITHUB_REF=refs/tags/desktop-v1.2.3 "$verify" desktop-v 1.2.3
 )
 
-if (
-  cd "$tmp"
-  GITHUB_REF=refs/heads/main "$verify" desktop-v 1.2.3
-); then
-  echo "branch-backed desktop release was accepted" >&2
-  exit 1
-fi
+# Capture expected failures so their production ::error:: messages do not
+# create false GitHub annotations on a successful regression-test job.
+assert_rejected_release() {
+  local ref="$1" expected="$2" output
+  if output=$(cd "$tmp" && GITHUB_REF="$ref" "$verify" desktop-v 1.2.3 2>&1); then
+    echo "invalid desktop release was accepted for $ref" >&2
+    exit 1
+  fi
+  if [[ "$output" != *"$expected"* ]]; then
+    printf 'unexpected release rejection: %s\n' "$output" >&2
+    exit 1
+  fi
+  printf 'Verified rejection: %s\n' "$expected"
+}
+
+assert_rejected_release refs/heads/main \
+  'Release must run at refs/tags/desktop-v1.2.3; got refs/heads/main'
 
 echo second >>"$tmp/file"
 git -C "$tmp" commit -qam second
-if (
-  cd "$tmp"
-  GITHUB_REF=refs/tags/desktop-v1.2.3 "$verify" desktop-v 1.2.3
-); then
-  echo "release accepted HEAD after the tag commit" >&2
-  exit 1
-fi
+assert_rejected_release refs/tags/desktop-v1.2.3 \
+  'does not match desktop-v1.2.3 commit'
 
 git -C "$tmp" tag -m "relay release" relay-v2.0.0
 (

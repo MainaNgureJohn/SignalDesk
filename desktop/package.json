@@ -18,6 +18,7 @@
     "preview": "vite preview",
     "tauri": "node ./scripts/tauri-command.mjs",
     "test:e2e": "pnpm build:e2e && playwright test",
+    "test:e2e:signaldesk": "pnpm build:e2e && playwright test --config=playwright.signaldesk.config.ts",
     "test:e2e:smoke": "pnpm build:e2e && playwright test --project=smoke",
     "test:e2e:integration": "pnpm build:e2e && playwright test --project=integration",
     "test:e2e:release-smoke": "pnpm build:e2e && playwright test --config=playwright.release-smoke.config.ts",

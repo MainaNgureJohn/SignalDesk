@@ -190,6 +190,13 @@ cargo test -p buzz-acp
 just ci
 ```
 
+For SignalDesk's browser workflows, run `pnpm -C desktop test:e2e:signaldesk`.
+This builds the test bridge and checks direct startup, agent settings, task
+routing and replies, and tokenized-stock research using a mock backend. CI runs
+these checks alongside the desktop unit tests and native build checks.
+The inherited Buzz browser suites remain in `desktop/playwright.config.ts`;
+they target Buzz's original screens, which SignalDesk replaced.
+
 Build an unsigned Windows package with the `x86_64-pc-windows-msvc` Rust target
 after the required sidecar binaries have been built and placed in
 `desktop/src-tauri/binaries`:

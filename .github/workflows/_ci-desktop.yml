@@ -113,16 +113,10 @@ jobs:
           key: pnpm-${{ runner.os }}-${{ hashFiles('**/pnpm-lock.yaml') }}
 
   desktop-smoke-e2e:
-    name: Desktop Smoke E2E (${{ matrix.shard }})
+    name: SignalDesk Browser Workflows
     runs-on: ubuntu-latest
-    # This project includes the full browser regression suite, split across four
-    # serial shards. Give slow GitHub runners enough time to finish a shard.
-    timeout-minutes: 60
+    timeout-minutes: 10
     if: github.event_name == 'push' || inputs.desktop || inputs.desktop_rust || inputs.rust
-    strategy:
-      fail-fast: false
-      matrix:
-        shard: [1, 2, 3, 4]
     permissions:
       contents: read
     steps:
@@ -154,24 +148,24 @@ jobs:
       - name: Install Playwright system dependencies
         run: cd desktop && pnpm exec playwright install-deps chromium
       - name: Save Playwright browser cache
-        if: steps.playwright-cache.outputs.cache-hit != 'true' && github.event_name == 'push' && matrix.shard == 1
+        if: steps.playwright-cache.outputs.cache-hit != 'true' && github.event_name == 'push'
         uses: actions/cache/save@caa296126883cff596d87d8935842f9db880ef25 # v5
         with:
           path: ${{ env.PLAYWRIGHT_BROWSERS_PATH }}
           key: playwright-${{ runner.os }}-${{ steps.pw-version.outputs.version }}
       - name: Desktop E2E build
         run: pnpm -C desktop build:e2e
-      - name: Desktop smoke e2e
-        run: cd desktop && pnpm exec playwright test --project=smoke --shard=${{ matrix.shard }}/4
+      - name: SignalDesk browser workflows
+        run: cd desktop && pnpm exec playwright test --config=playwright.signaldesk.config.ts
       - name: Summarize flaky tests
         if: ${{ !cancelled() }}
-        run: node scripts/summarize-flaky-tests.mjs playwright-report.json "Desktop Smoke E2E (${{ matrix.shard }})"
+        run: node scripts/summarize-flaky-tests.mjs playwright-report.json "SignalDesk Browser Workflows"
         working-directory: desktop
       - name: Upload desktop smoke e2e artifacts
         if: ${{ !cancelled() }}
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
         with:
-          name: desktop-smoke-e2e-artifacts-${{ matrix.shard }}
+          name: signaldesk-browser-artifacts
           path: |
             desktop/playwright-report
             desktop/playwright-report.json
@@ -195,7 +189,7 @@ jobs:
             exit 1
           fi
           if [ "${{ needs.desktop-smoke-e2e.result }}" != "success" ]; then
-            echo "Desktop Smoke E2E shards finished with: ${{ needs.desktop-smoke-e2e.result }}"
+            echo "SignalDesk Browser Workflows finished with: ${{ needs.desktop-smoke-e2e.result }}"
             exit 1
           fi
           if [ "${{ needs.desktop-windows-build.result }}" != "success" ]; then
