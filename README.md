@@ -9,7 +9,6 @@
   <a href="#install-on-windows">Installation</a> ·
   <a href="#connect-binance-web3-and-agentic-wallet">Binance Web3 &amp; Agentic Wallet</a> ·
   <a href="#build-from-source">Development</a> ·
-  <a href="docs/SIGNALDESK_PLAN.md">Project plan</a> ·
   <a href="CONTRIBUTORS.md">Contributors</a> ·
   <a href="LICENSE">Apache 2.0</a>
 </p>
@@ -214,9 +213,6 @@ The 0.5.25 milestone passed the focused SignalDesk Rust tests, persona migration
 tests, runtime selection test, TypeScript typecheck, Rust formatting, release
 build, and Windows installer inspection. No automated test performs a live
 trade.
-
-The detailed implementation and acceptance status is recorded in
-[`docs/SIGNALDESK_PLAN.md`](docs/SIGNALDESK_PLAN.md).
 
 ## License and attribution
 
